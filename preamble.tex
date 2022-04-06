@@ -1,0 +1,141 @@
+\usepackage{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=3cm,lmargin=4cm,rmargin=3cm}
+\usepackage[pdftex,bookmarks=true,unicode=true,pdfusetitle,bookmarksnumbered=true,bookmarksopen=true,breaklinks=true,pdfborder={0 0 1},backref=true,colorlinks=false]{hyperref}
+
+%%%% identitas (kalo file pdf nya di klik kanan, info..)
+\hypersetup{pdfauthor={\penulis}, 
+	pdfsubject={SKRIPSI},
+	pdftitle={\judul},
+	pdfkeywords={\keywords}}
+
+\usepackage[htt]{hyphenat}
+\usepackage{listing}
+\usepackage{graphicx}      %menghandle gambar
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage[hang,nooneline,scriptsize,md]{subfigure}
+\usepackage{epsfig}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage[onehalfspacing]{setspace}      %buat kombinasi spacing
+\usepackage{indentfirst}
+%\setlength{\parindent}{0.6cm}
+\usepackage{parskip}
+\usepackage[titletoc]{appendix}
+\usepackage{cite}          % buat cite pake BibTex
+\bibliographystyle{apalike}
+\usepackage[bahasa]{babel} %plugin bahasa 
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}   % biar bisa kombinasi font
+\usepackage{mathptmx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathrsfs}
+\usepackage{dsfont}
+\usepackage{listings}
+\usepackage{relsize}
+%%% pengaturan global
+\graphicspath{{gambar/}}   % letak direktori penyimpanan gambar
+%\usepackage[authoryear,round]{natbib}
+
+%\citestyle{nature}
+
+
+%\usepackage[fixlanguage]{babelbib}
+%\selectbiblanguage{bahasa}
+
+\pagestyle{plain}
+\setlength{\parindent}{20pt}
+
+%format judul
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+{\bfseries\Large}
+{%
+	% \vskip-5em
+	\filcenter
+	\LARGE\MakeUppercase \chaptertitlename\ 
+	\LARGE\thechapter}
+{0mm}
+{\filcenter}
+\titleformat*{\section}{\bfseries\large}
+\titleformat*{\subsection}{\bfseries}
+\titlespacing*{\chapter}{0pt}{-1.5\baselineskip}{1em}
+
+%menambahkan titik titik di daftar isi, gambar, tabel
+\usepackage[subfigure]{tocloft}
+\renewcommand{\cftpartleader}{\dotfill}
+\renewcommand{\cftpartafterpnum}{\cftparfillskip}
+\renewcommand{\cftchapleader}{\dotfill} 
+\renewcommand{\cftsecleader}{\dotfill}
+\renewcommand{\cftsubsecleader}{\dotfill}
+
+%tambah "bab" x di daftar isi 
+\renewcommand*\cftchappresnum{\MakeUppercase{bab}~}
+\renewcommand\chaptername{BAB}
+\settowidth{\cftchapnumwidth}{\cftchappresnum}
+\renewcommand{\cftchapaftersnumb}{\quad}
+\addtocontents{toc}{
+	%\renewcommand\protect*\protect\cftchappresnum{\MakeUppercase{\chaptername}~}}
+	\protect\renewcommand*\protect\cftchappresnum{\MakeUppercase{\chaptername}~}}
+
+%Penomoran Bab berupa bilangan romawi
+\renewcommand{\thechapter}{\Roman{chapter}}%
+
+%tambah "gambar" dan "table" di daftar gambar dan daftar tabel
+\usepackage{chngcntr}  
+%\counterwithout{figure}{chapter}
+\renewcommand{\cftfigpresnum}{\bfseries Gambar\ }
+\renewcommand{\cfttabpresnum}{\bfseries Tabel\ }
+\newlength{\mylenf}
+\settowidth{\mylenf}{\cftfigpresnum}
+\setlength{\cftfignumwidth}{\dimexpr\mylenf+2em}
+\settowidth{\mylenf}{\cfttabpresnum}
+\setlength{\cfttabnumwidth}{\dimexpr\mylenf+2em}
+\makeatletter
+
+%bikin listoftable tanpa judul, gara2 aneh
+%\counterwithout{table}{chapter}
+\newcommand\daftartabel{%
+	\phantomsection
+	\@starttoc{lof}%
+	\bigskip
+	\@starttoc{lot}}
+\makeatother
+
+
+
+%ilangin judul bibli 
+\makeatletter
+\renewenvironment{thebibliography}[1]{%
+	\section*{\refname}%
+	\@mkboth{\MakeUppercase\refname}{\MakeUppercase\refname}%
+	\list{\@biblabel{\@arabic\c@enumiv}}%
+	{\settowidth\labelwidth{\@biblabel{#1}}%
+		\leftmargin\labelwidth
+		\advance\leftmargin\labelsep
+		\@openbib@code
+		\usecounter{enumiv}%
+		\let\p@enumiv\@empty
+		\renewcommand\theenumiv{\@arabic\c@enumiv}}%
+	\sloppy
+	\clubpenalty4000
+	\@clubpenalty \clubpenalty
+	\widowpenalty4000%
+	\sfcode`\.\@m}
+{\def\@noitemerr
+	{\@latex@warning{Empty `thebibliography' environment}}%
+	\endlist}
+\makeatother
+
+
+%lampiran
+\makeatletter
+\newcommand\appendix@chapter[1]{%
+	\refstepcounter{chapter}%
+	\orig@chapter*{LAMPIRAN \@Alph\c@chapter \\  #1}\vspace{1.5em}%
+	\addcontentsline{toc}{chapter}{LAMPIRAN \@Alph\c@chapter: #1}%
+}
+\let\orig@chapter\chapter
+\g@addto@macro\appendix{\let\chapter\appendix@chapter}
+\makeatother
